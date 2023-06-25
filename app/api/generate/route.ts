@@ -39,7 +39,7 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   let { prompt: content } = await req.json();
-
+  console.log("content - " + content)
   // remove line breaks,
   // remove trailing slash,
   // limit to 5000 characters
@@ -51,9 +51,9 @@ export async function POST(req: Request): Promise<Response> {
       {
         role: "system",
         content:
-          "You are an AI writing assistant that continues existing text based on context from prior text. " +
-          "Give more weight/priority to the later characters than the beginning ones. Make sure to construct complete sentences.",
-      },
+          "your job is to build a newsletter based on the recent news in a country." + 
+          "Use the json provided to get a list of articles. Create a newsletter putting together all the news articles and translate everything in english."
+    },
       {
         role: "user",
         content,
