@@ -12,7 +12,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <Toaster />
       <body className={cx(cal.variable, inter.variable)}>
-        <p>What are they reading</p>
         {children}
       </body>
       <Analytics />

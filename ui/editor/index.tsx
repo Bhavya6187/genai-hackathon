@@ -12,6 +12,8 @@ import DEFAULT_EDITOR_CONTENT from "./default-content";
 
 import { EditorBubbleMenu } from "./components";
 
+import "./App.css";
+
 export default function Editor() {
   const content = DEFAULT_EDITOR_CONTENT;
 
@@ -19,16 +21,19 @@ export default function Editor() {
 
   const [country, setCountry] = useState(""); // state for selected country
 
-  const handleChange = (event) => {
-    setCountry(event.target.value); // update country when a new one is selected
-  };
 
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
     autofocus: "end",
+    editable: false,
   });
-  
+
+  const handleChange = (event) => {
+    setCountry(event.target.value); // update country when a new one is selected
+    editor.commands.clearContent();
+  };
+
   const { complete, completion, isLoading, stop } = useCompletion({
     id: "novel",
     api: "/api/generate",
@@ -41,8 +46,8 @@ export default function Editor() {
     },
     onFinish: (_prompt, completion) => {
       editor?.commands.setTextSelection({
-        from: editor.state.selection.from - completion.length,
-        to: editor.state.selection.from,
+        from: 0,
+        to: completion.length,
       });
     },
     onError: () => {
@@ -50,10 +55,29 @@ export default function Editor() {
     },
   });
 
+
   const fetchTopHeadlines = useCallback(async () => {
     if (country.length === 2) { // make API call when a country is selected
-      const response = await Axios.get("https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=50e619be98af425c930cc32804d9a2c1");
-      complete(JSON.stringify(response.data['articles']));
+      console.log("Country selected - " + country)
+      const bing_options = {
+        method: 'GET',
+        url: 'https://bing-news-search1.p.rapidapi.com/news/search',
+        params: {
+          q: 'location:'+country,
+          freshness: 'Day',
+          textFormat: 'Raw',
+          safeSearch: 'Off'
+        },
+        headers: {
+          'X-BingApis-SDK': 'true',
+          'X-RapidAPI-Key': '5d9a19e397msh1d381229fff0ea6p177155jsneae9fb7fdead',
+          'X-RapidAPI-Host': 'bing-news-search1.p.rapidapi.com'
+        }
+      };
+
+      const response = await Axios.request(bing_options);
+      console.log(response.data)
+      complete(JSON.stringify(response.data['value']));
       va.track("Country Selected");
     }
   }, [country, complete]); // add dependencies here
@@ -77,42 +101,6 @@ export default function Editor() {
     });
   }, [isLoading, editor, completion]);
 
-  useEffect(() => {
-    // if user presses escape or cmd + z and it's loading,
-    // stop the request, delete the completion, and insert back the "++"
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" || (e.metaKey && e.key === "z")) {
-        stop();
-        if (e.key === "Escape") {
-          editor?.commands.deleteRange({
-            from: editor.state.selection.from - completion.length,
-            to: editor.state.selection.from,
-          });
-        }
-        editor?.commands.insertContent("++");
-      }
-    };
-    const mousedownHandler = (e: MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      stop();
-      if (window.confirm("AI writing paused. Continue?")) {
-        complete(editor?.getText() || "");
-      }
-    };
-    if (isLoading) {
-      document.addEventListener("keydown", onKeyDown);
-      window.addEventListener("mousedown", mousedownHandler);
-    } else {
-      document.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("mousedown", mousedownHandler);
-    }
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("mousedown", mousedownHandler);
-    };
-  }, [stop, isLoading, editor, complete, completion.length]);
-
   // Hydrate the editor with the content from localStorage.
   useEffect(() => {
     if (editor && content && !hydrated) {
@@ -126,15 +114,15 @@ export default function Editor() {
       <select onChange={handleChange}> {/* country selector */}
         <option value="">Select a country</option>
         <option value="us">United States</option>
-        <option value="uk">United Kingdom</option>
+        <option value="in">India</option>
+        <option value="cn">China</option>
+        <option value="ru">Russia</option>
+        <option value="mx">Mexico</option>
         {/* add more options as necessary */}
       </select>
 
       <div
-        onClick={() => {
-          editor?.chain().focus().run();
-        }}
-        className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+        className="unselectable relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
       >
 
         {editor ? (
