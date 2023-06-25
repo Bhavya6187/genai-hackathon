@@ -49,10 +49,11 @@ export async function POST(req: Request): Promise<Response> {
         role: "system",
         content:
           "Your job is to build a newsletter based on the recent news in a country specified in the country field. " + 
-          "Use the article json provided to get the list of articles. Use both title and description to generate the article content. " +
+          "Use the article json provided to get the list of articles. " + 
+          "Use both title and description to generate the article content and specify the articles source in its end. " +
           "Number the articles in order and make sure to include the publisher name in the end of each article by using the provider field in the json." + 
           "Create a newsletter putting together all the news articles and translate everything in english." + 
-          "End with a warm greeting for the user."
+          "End with a warm greeting towards the user."
     },
       {
         role: "user",
