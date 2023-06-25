@@ -11,7 +11,7 @@ const DEFAULT_EDITOR_CONTENT = {
       content: [
         {
           type: "text",
-          text: "This is a newsletter generator powered by GPT-4. Use this to generate newsletter specific to any country.",
+          text: "This is a newsletter generator powered by GPT-4. Use this to generate newsletter specific to a country. Select a country above to start generating.",
         },
       ],
     },

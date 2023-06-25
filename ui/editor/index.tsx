@@ -19,7 +19,6 @@ export default function Editor() {
 
   const [country, setCountry] = useState(""); // state for selected country
 
-
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
