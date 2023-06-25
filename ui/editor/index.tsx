@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { TiptapEditorProps } from "./props";
 import { TiptapExtensions } from "./extensions";
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
 import va from "@vercel/analytics";
+import Axios from "axios";
 import DEFAULT_EDITOR_CONTENT from "./default-content";
 
 import { EditorBubbleMenu } from "./components";
@@ -16,28 +17,18 @@ export default function Editor() {
 
   const [hydrated, setHydrated] = useState(false);
 
+  const [country, setCountry] = useState(""); // state for selected country
+
+  const handleChange = (event) => {
+    setCountry(event.target.value); // update country when a new one is selected
+  };
+
   const editor = useEditor({
     extensions: TiptapExtensions,
     editorProps: TiptapEditorProps,
-    onUpdate: (e) => {
-      const selection = e.editor.state.selection;
-      const lastTwo = e.editor.state.doc.textBetween(
-        selection.from - 2,
-        selection.from,
-        "\n",
-      );
-      if (lastTwo === "++" && !isLoading) {
-        e.editor.commands.deleteRange({
-          from: selection.from - 2,
-          to: selection.from,
-        });
-        complete("us");
-        va.track("Autocomplete Shortcut Used");
-      }
-    },
     autofocus: "end",
   });
-
+  
   const { complete, completion, isLoading, stop } = useCompletion({
     id: "novel",
     api: "/api/generate",
@@ -58,6 +49,20 @@ export default function Editor() {
       toast.error("Something went wrong.");
     },
   });
+
+  const fetchTopHeadlines = useCallback(async () => {
+    if (country.length === 2) { // make API call when a country is selected
+      const response = await Axios.get("https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=50e619be98af425c930cc32804d9a2c1");
+      complete(JSON.stringify(response.data['articles']));
+      va.track("Country Selected");
+    }
+  }, [country, complete]); // add dependencies here
+
+  // Call the API when the selected country changes
+  useEffect(() => {
+    fetchTopHeadlines();
+  }, [fetchTopHeadlines]); // dependency array
+
 
   const prev = useRef("");
 
@@ -117,21 +122,30 @@ export default function Editor() {
   }, [editor, content, hydrated]);
 
   return (
-    <div
-      onClick={() => {
-        editor?.chain().focus().run();
-      }}
-      className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
-    >
+    <>
+      <select onChange={handleChange}> {/* country selector */}
+        <option value="">Select a country</option>
+        <option value="us">United States</option>
+        <option value="uk">United Kingdom</option>
+        {/* add more options as necessary */}
+      </select>
 
-      {editor ? (
-        <>
-          <EditorContent editor={editor} />
-          <EditorBubbleMenu editor={editor} />
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
+      <div
+        onClick={() => {
+          editor?.chain().focus().run();
+        }}
+        className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+      >
+
+        {editor ? (
+          <>
+            <EditorContent editor={editor} />
+            <EditorBubbleMenu editor={editor} />
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    </>
   );
 }
