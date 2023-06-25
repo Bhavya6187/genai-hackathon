@@ -128,7 +128,7 @@ export default function Editor() {
         <option value="ru">Russia</option>
         <option value="fr">France</option>
         <option value="br">Brazil</option>
-        <option value="dr">Germany</option>
+        <option value="de">Germany</option>
         <option value="il">Israel</option>
         <option value="es">Spain</option>
         <option value="ua">Ukraine</option>
