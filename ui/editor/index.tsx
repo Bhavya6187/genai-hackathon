@@ -108,7 +108,19 @@ export default function Editor() {
 
   return (
     <>
-      <select onChange={handleChange}> {/* country selector */}
+      <select 
+        onChange={handleChange}
+        style={{
+          backgroundColor: '#F3E5AB',
+          border: '1px solid #645853',
+          borderRadius: '4px',
+          padding: '10px',
+          fontSize: '18px',
+          color: '#645853',
+          marginBottom: '20px',
+          width: '200px'
+        }}
+      > {/* country selector */}
         <option value="">Select a country</option>
         <option value="us">United States</option>
         <option value="in">India</option>
@@ -117,6 +129,8 @@ export default function Editor() {
         <option value="mx">Mexico</option>
         {/* add more options as necessary */}
       </select>
+
+      <div style={{marginTop: '20px'}}> {/* Gap of 20px */} </div>
 
       <div
         className="unselectable relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
