@@ -31,6 +31,7 @@ export default function Editor() {
           from: selection.from - 2,
           to: selection.from,
         });
+        console.log(e.editor.getText());
         complete(e.editor.getText());
         va.track("Autocomplete Shortcut Used");
       }
