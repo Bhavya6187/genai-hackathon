@@ -10,8 +10,6 @@ import va from "@vercel/analytics";
 import Axios from "axios";
 import DEFAULT_EDITOR_CONTENT from "./default-content";
 
-import { EditorBubbleMenu } from "./components";
-
 import "./App.css";
 
 export default function Editor() {
@@ -128,7 +126,6 @@ export default function Editor() {
         {editor ? (
           <>
             <EditorContent editor={editor} />
-            <EditorBubbleMenu editor={editor} />
           </>
         ) : (
           <></>
