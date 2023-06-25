@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Vintage Newspaper</title>
+  <title>Vintage Newspaper with Dropdown</title>
   <style>
     body {
       font-family: "Times New Roman", serif;
@@ -41,14 +41,44 @@
     .article:last-child {
       margin-bottom: 0;
     }
+    .dropdown {
+      margin-bottom: 30px;
+    }
+    .dropdown select {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #fff;
+    }
   </style>
 </head>
 <body>
   <h1>The Vintage Newspaper</h1>
 
-  <div class="article">
-    <h2>Headline 1</h2>
+  <div class="dropdown">
+    <select id="countrySelect">
+      <option value="">Select a Country</option>
+      <option value="usa">USA</option>
+      <option value="uk">UK</option>
+      <option value="france">France</option>
+      <option value="germany">Germany</option>
+      <!-- Add more country options as needed -->
+    </select>
+  </div>
+
+  <div class="article" id="usa">
+    <h2>Headline 1 (USA)</h2>
     <p class="date">Published on June 24, 2023</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum iaculis nisl, eu gravida metus ullamcorper vel. Nulla nec magna vitae elit eleifend eleifend ac vitae massa.</p>
     <h3>Subheadline</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae tincidunt elit. Morbi eget metus fringilla, faucibus metus nec, dignissim ligula.</p>
+  </div>
+
+  <div class="article" id="uk">
+    <h2>Headline 2 (UK)</h2>
+    <p class="date">Published on June 23, 2023</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur fermentum iaculis nisl, eu gravida metus ullamcorper vel. Nulla nec magna vitae elit eleifend eleifend ac vitae massa.</p>
+    <h3>Subheadline</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae tincidunt elit. Morbi eget metus fringilla, faucibus metus nec, digniss
 
