@@ -52,7 +52,7 @@ export async function POST(req: Request): Promise<Response> {
           "Use the article json provided to get the list of articles. Use both title and description to generate the article content. " +
           "Number the articles in order and make sure to include the publisher name in the end of each article by using the provider field in the json." + 
           "Create a newsletter putting together all the news articles and translate everything in english." + 
-          "End with a warm greeting"
+          "End with a warm greeting for the user."
     },
       {
         role: "user",

@@ -126,6 +126,13 @@ export default function Editor() {
         <option value="in">India</option>
         <option value="cn">China</option>
         <option value="ru">Russia</option>
+        <option value="fr">France</option>
+        <option value="br">Brazil</option>
+        <option value="dr">Germany</option>
+        <option value="il">Israel</option>
+        <option value="es">Spain</option>
+        <option value="ua">Ukraine</option>
+        <option value="ae">UAE</option>
         <option value="mx">Mexico</option>
         {/* add more options as necessary */}
       </select>
