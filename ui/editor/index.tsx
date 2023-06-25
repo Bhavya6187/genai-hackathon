@@ -108,6 +108,7 @@ export default function Editor() {
   return (
     <>
       <select 
+        defaultValue=""
         onChange={handleChange}
         style={{
           backgroundColor: '#F3E5AB',
