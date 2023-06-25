@@ -49,16 +49,18 @@ export async function POST(req: Request): Promise<Response> {
       {
         role: "system",
         content:
-          "your job is to build a newsletter based on the recent news in a country." + 
-          " Use the json provided to get a list of articles. Create a newsletter putting together all the news articles and translate everything in english." + 
-          " Make sure to include the publisher name in the end using the provider field in the json."
+          "Your job is to build a newsletter based on the recent news in a country specified in the country field. " + 
+          "Use the article json provided to get the list of articles. Use both title and description to generate the article content. " +
+          "Number the articles in order and make sure to include the publisher name in the end of each article by using the provider field in the json." + 
+          "Create a newsletter putting together all the news articles and translate everything in english." + 
+          "End with a warm greeting"
     },
       {
         role: "user",
         content,
       },
     ],
-    temperature: 0.7,
+    temperature: 1,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

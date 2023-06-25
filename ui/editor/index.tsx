@@ -73,8 +73,7 @@ export default function Editor() {
       };
 
       const response = await Axios.request(bing_options);
-      console.log(response.data)
-      complete(JSON.stringify(response.data['value']));
+      complete("Country: " + country + " \n " + "articles json: " + JSON.stringify(response.data['value']));
       va.track("Country Selected");
     }
   }, [country, complete]); // add dependencies here
@@ -133,7 +132,7 @@ export default function Editor() {
       <div style={{marginTop: '20px'}}> {/* Gap of 20px */} </div>
 
       <div
-        className="unselectable relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+        className="editor-box unselectable relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
       >
 
         {editor ? (
