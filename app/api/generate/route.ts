@@ -39,7 +39,6 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   let { prompt: content } = await req.json();
-  console.log("content - " + content)
   // remove line breaks,
   // remove trailing slash,
   // limit to 5000 characters
